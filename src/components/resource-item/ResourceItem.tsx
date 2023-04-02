@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { ResourceCode } from "../resource-code/ResourceCode";
-import { ResourcePreview } from "../resource-preview/ResourcePreview";
 
 interface ResourceItemProps {
   name: string;
