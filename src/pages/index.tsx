@@ -9,8 +9,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1 className="text-3xl font-bold underline">Hello world</h1>
+      <main className="max-w-xl mx-auto py-12 divide-y md:max-w-4xl">
+        <h1 className="font-title text-3xl">Faker Snippets</h1>
+        <hr className="my-10" />
+        <div className="flex flex-col gap-3">
+          <input type="email" className="form-input" />
+          <select className="form-select">
+            <option value="">True</option>
+          </select>
+          <input type="checkbox" className="form-checkbox" />
+        </div>
       </main>
     </>
   );
