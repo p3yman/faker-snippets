@@ -30,143 +30,134 @@ export interface UserData {
     linkedin: string;
     github: string;
   };
-  interests: string[];
 }
 
 const structure: Structure[] = [
   {
     name: "firstName",
     label: "First name",
-    generator: {
-      fn: faker.name.firstName,
-      source: "faker.name.firstName",
-    },
+    generator: faker.name.firstName,
+    source: "faker.name.firstName()",
   },
   {
     name: "lastName",
     label: "Last name",
-    generator: {
-      fn: faker.name.lastName,
-      source: "faker.name.lastName",
-    },
+    generator: faker.name.lastName,
+    source: "faker.name.lastName()",
   },
   {
     name: "email",
     label: "Email",
-    generator: {
-      fn: faker.internet.email,
-      source: "faker.internet.email",
-    },
+    generator: faker.internet.email,
+    source: "faker.internet.email()",
   },
   {
     name: "username",
     label: "Username",
-    generator: {
-      fn: faker.internet.userName,
-      source: "faker.internet.userName",
-    },
+    generator: faker.internet.userName,
+    source: "faker.internet.userName()",
   },
   {
     name: "password",
     label: "Password",
-    generator: {
-      fn: faker.internet.password,
-      source: "faker.internet.password",
-    },
+    generator: faker.internet.password,
+    source: "faker.internet.password()",
   },
   {
     name: "phone",
     label: "Phone",
-    generator: {
-      fn: faker.phone.number,
-      source: "faker.phone.number",
-    },
+    generator: faker.phone.number,
+    source: "faker.phone.number()",
   },
   {
     name: "address",
     label: "Address",
-    generator: {
-      nested: true,
-      fn: () => ({
-        streetAddress: faker.address.streetAddress(),
-        city: faker.address.city(),
-        state: faker.address.stateAbbr(),
-        zipCode: faker.address.zipCode(),
-        country: faker.address.country(),
-      }),
-      source: `{
-    street: faker.address.streetAddress(),
-    city: faker.address.city(),
-    state: faker.address.stateAbbr(),
-    zipCode: faker.address.zipCode(),
-    country: faker.address.country(),
-  }`,
-    },
+    children: [
+      {
+        name: "street",
+        label: "Street",
+        generator: faker.address.streetAddress,
+        source: "faker.address.streetAddress()",
+      },
+      {
+        name: "city",
+        label: "City",
+        generator: faker.address.city,
+        source: "faker.address.city()",
+      },
+      {
+        name: "state",
+        label: "State",
+        generator: faker.address.stateAbbr,
+        source: "faker.address.stateAbbr()",
+      },
+      {
+        name: "zipCode",
+        label: "Zip code",
+        generator: faker.address.zipCode,
+        source: "faker.address.zipCode()",
+      },
+      {
+        name: "country",
+        label: "Country",
+        generator: faker.address.country,
+        source: "faker.address.country()",
+      },
+    ],
   },
   {
     name: "avatar",
     label: "Avatar",
-    generator: {
-      fn: faker.image.avatar,
-      source: "faker.image.avatar",
-    },
+    generator: faker.image.avatar,
+    source: "faker.image.avatar()",
   },
   {
     name: "job",
     label: "Job",
-    generator: {
-      nested: true,
-      fn: () => ({
-        title: faker.name.jobTitle(),
-        company: faker.company.name(),
-        website: faker.internet.url(),
-      }),
-      source: `{
-    title: faker.name.jobTitle(),
-    company: faker.company.name(),
-    website: faker.internet.url(),
-  }`,
-    },
+    children: [
+      {
+        name: "title",
+        label: "Title",
+        generator: faker.name.jobTitle,
+        source: "faker.name.jobTitle()",
+      },
+      {
+        name: "company",
+        label: "Company",
+        generator: faker.company.name,
+        source: "faker.company.name()",
+      },
+      {
+        name: "website",
+        label: "Website",
+        generator: faker.internet.url,
+        source: "faker.internet.url()",
+      },
+    ],
   },
   {
     name: "social",
     label: "Socials",
-    generator: {
-      nested: true,
-      fn: () => {
-        const username = faker.internet.userName();
-        return {
-          twitter: `@${username}`,
-          linkedin: `https://linkedin.com/in/${username}`,
-          github: `https://github.com/${username}`,
-        };
+    children: [
+      {
+        name: "twitter",
+        label: "Twitter",
+        generator: () => `@${faker.internet.userName()}`,
+        source: "`@${faker.internet.userName()}`",
       },
-      source: `{
-    const username = faker.internet.userName();
-    return {
-      twitter: \`@\${username}\`,
-      linkedin: \`https://linkedin.com/in/\${username}\`,
-      github: \`https://github.com/\${username}\`,
-    }
-  }`,
-    },
-  },
-  {
-    name: "interersts",
-    label: "Interests",
-    generator: {
-      nested: true,
-      fn: () => [
-        faker.hacker.adjective(),
-        faker.hacker.noun(),
-        faker.hacker.ingverb(),
-      ],
-      source: `[
-    faker.hacker.adjective(),
-    faker.hacker.noun(),
-    faker.hacker.ingverb(),
-  ]`,
-    },
+      {
+        name: "linkedin",
+        label: "Linkedin",
+        generator: () => `https://linkedin.com/in/${faker.internet.userName()}`,
+        source: "`https://linkedin.com/in/${faker.internet.userName()}`",
+      },
+      {
+        name: "github",
+        label: "GitHub",
+        generator: () => `https://github.com/${faker.internet.userName()}`,
+        source: "`https://github.com/${faker.internet.userName()}`",
+      },
+    ],
   },
 ];
 
