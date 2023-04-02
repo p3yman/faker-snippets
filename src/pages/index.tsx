@@ -1,5 +1,7 @@
 import Head from "next/head";
 
+import { Resources } from "@/components/resources/Resources";
+
 export default function Home() {
   return (
     <>
@@ -9,16 +11,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="max-w-xl mx-auto py-12 divide-y md:max-w-4xl">
-        <h1 className="font-title text-3xl">Faker Snippets</h1>
+      <main className="max-w-xl mx-auto py-12 md:max-w-4xl">
+        <h1 className="font-title text-5xl">Faker Snippets</h1>
         <hr className="my-10" />
-        <div className="flex flex-col gap-3">
-          <input type="email" className="form-input" />
-          <select className="form-select">
-            <option value="">True</option>
-          </select>
-          <input type="checkbox" className="form-checkbox" />
-        </div>
+        <Resources />
       </main>
     </>
   );
