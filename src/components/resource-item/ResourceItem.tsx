@@ -1,39 +1,42 @@
+import { UserData } from "@/utils/fakers/user";
 import { useMemo, useState } from "react";
 import { ResourceCode } from "../resource-code/ResourceCode";
 
 interface ResourceItemProps {
   name: string;
   label: string;
+  generators: {
+    output: () => {};
+    source: () => string;
+  };
 }
 
-const exampleCode = `// Users resource
-const inter = Inter({ subsets: ['latin'] })
-`;
+type ItemData = Partial<UserData>;
 
-const examplePreview = `const user = {
-  name: 'John',
-}
-`;
-
-export const ResourceItem = ({ name, label }: ResourceItemProps) => {
+export const ResourceItem = ({
+  name,
+  label,
+  generators,
+}: ResourceItemProps) => {
   const [tab, setTab] = useState<"code" | "preview">("code");
+  const [data, setData] = useState<ItemData>(generators.output());
 
   const refreshButton = useMemo(() => {
     return {
       name: "refresh",
       label: "Refresh",
       onClick: () => {
-        console.log("Refreshed!");
+        setData(generators.output());
       },
     };
-  }, []);
+  }, [generators]);
 
   return (
     <div className="w-full mb-12">
       <h1 className="font-title text-2xl mb-4">{label}</h1>
       <div className="flex gap-2 w-full">
-        <div className="w-1/2">Fields...</div>
-        <div className="w-1/2">
+        <div className="w-1/3 grow-0 shrink-0">Fields...</div>
+        <div className="basis-2/3 grow-0 shrink-0">
           <div className="flex flex-wrap text-sm font-medium text-center text-gray-500 bg-slate-800 rounded-t border-b border-slate-700">
             <Tab
               label="Code"
@@ -47,9 +50,12 @@ export const ResourceItem = ({ name, label }: ResourceItemProps) => {
             />
           </div>
           <div>
-            {tab === "code" && <ResourceCode code={exampleCode} />}
+            {tab === "code" && <ResourceCode code={generators.source()} />}
             {tab === "preview" && (
-              <ResourceCode code={examplePreview} actions={[refreshButton]} />
+              <ResourceCode
+                code={JSON.stringify(data, null, 2)}
+                actions={[refreshButton]}
+              />
             )}
           </div>
         </div>
