@@ -32,7 +32,7 @@ export interface UserData {
   };
 }
 
-const structure: Structure[] = [
+export const userStructure: Structure[] = [
   {
     name: "firstName",
     label: "First name",
@@ -162,9 +162,9 @@ const structure: Structure[] = [
 ];
 
 export function generateUserSource(fields: string[] = []): string {
-  return generateOutputSource(fields, structure);
+  return generateOutputSource(fields, userStructure);
 }
 
 export function generateUserData(fields: string[] = []): Partial<UserData> {
-  return generateOutputData(fields, structure);
+  return generateOutputData(fields, userStructure);
 }

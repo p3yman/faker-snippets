@@ -1,13 +1,15 @@
 import { UserData } from "@/utils/fakers/user";
+import { Structure } from "@/utils/generateOutput";
 import { useMemo, useState } from "react";
 import { ResourceCode } from "../resource-code/ResourceCode";
 
 interface ResourceItemProps {
   name: string;
   label: string;
+  structure: Structure[];
   generators: {
-    output: () => {};
-    source: () => string;
+    output: (fields: string[]) => {};
+    source: (fields: string[]) => string;
   };
 }
 
@@ -16,10 +18,18 @@ type ItemData = Partial<UserData>;
 export const ResourceItem = ({
   name,
   label,
+  structure,
   generators,
 }: ResourceItemProps) => {
   const [tab, setTab] = useState<"code" | "preview">("code");
   const [data, setData] = useState<ItemData>(generators.output());
+  const [fields, setFields] = useState(
+    Object.keys(data).reduce((acc: Record<string, boolean>, key) => {
+      acc[key] = true;
+      return acc;
+    }, {})
+  );
+  console.log({ fields });
 
   const refreshButton = useMemo(() => {
     return {
@@ -35,7 +45,23 @@ export const ResourceItem = ({
     <div className="w-full mb-12">
       <h1 className="font-title text-2xl mb-4">{label}</h1>
       <div className="flex gap-2 w-full">
-        <div className="w-1/3 grow-0 shrink-0">Fields...</div>
+        <div className="w-1/3 grow-0 shrink-0 flex flex-col gap-1">
+          {structure.map((item) => (
+            <label className="inline-flex items-center" key={item.name}>
+              <input
+                type="checkbox"
+                checked={fields[item.name]}
+                onChange={(e) =>
+                  setFields((fields) => ({
+                    ...fields,
+                    [item.name]: e.target.checked,
+                  }))
+                }
+              />
+              <span className="ml-2">{item.label}</span>
+            </label>
+          ))}
+        </div>
         <div className="basis-2/3 grow-0 shrink-0">
           <div className="flex flex-wrap text-sm font-medium text-center text-gray-500 bg-slate-800 rounded-t border-b border-slate-700">
             <Tab
